@@ -35,7 +35,16 @@ export function useOnDraw(onDraw) {
     window.addEventListener("mousemove", mouseMoveListener);
   }
 
+  function initMouseUpListener() {
+    const mouseUpListener = () => {
+      isDrawingRef.current = false;
+      prevPointRef.current = null;
+    }
+    window.addEventListener("mouseup", mouseUpListener);
+  }
+
   initMouseMoveListener();
+  initMouseUpListener();
 
   return {
     onCanvasMouseDown
