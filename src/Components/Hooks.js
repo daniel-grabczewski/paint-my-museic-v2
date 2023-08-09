@@ -1,9 +1,7 @@
-import React from 'react'
+import { useRef } from 'react'
 
-const Hooks = () => {
-  return (
-    <div>Hooks</div>
-  )
+export function useOnDraw() {
+  const canvasRef = useRef(null)
+  const isDrawingRef = useRef(false)
+  const prevPointRef = useRef(null)
 }
-
-export default Hooks
