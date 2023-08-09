@@ -1,17 +1,27 @@
-import { useRef } from "react";
+import { useRef } from 'react'
 
-export function useOnDraw() {
-  const canvasRef = useRef(null);
-  const isDrawingRef = useRef(false);
-  const prevPointRef = useRef(null);
+export function useOnDraw(onDraw) {
+  const canvasRef = useRef(null)
+  const isDrawingRef = useRef(false)
+  const prevPointRef = useRef(null)
+
+  function computePointInCanvas(clientX, clientY) {
+    if (canvasRef.current) {
+      const boundingRect = canvasRef.current.getBoundingClientRect()
+      return {
+        x: clientX - boundingRect.left,
+        y: clientY - boundingRect.top,
+      }
+    } else {
+      return null
+    }
+  }
 
   function onCanvasMouseDown() {
-    isDrawingRef.current = true;
-    // More features to be added soon
+    isDrawingRef.current = true
   }
 
   return {
-    onCanvasMouseDown
+    onCanvasMouseDown,
   }
 }
-
