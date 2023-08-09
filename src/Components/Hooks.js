@@ -19,14 +19,17 @@ export function useOnDraw(onDraw) {
 
   function onCanvasMouseDown() {
     isDrawingRef.current = true;
-    // Continue expanding this function in subsequent commits
   }
 
   function initMouseMoveListener() {
     const mouseMoveListener = (e) => {
       if (isDrawingRef.current && canvasRef.current) {
         const point = computePointInCanvas(e.clientX, e.clientY);
-        // Drawing logic will be added later
+        if (onDraw) {
+          const ctx = canvasRef.current.getContext('2d');
+          onDraw(ctx, point, prevPointRef.current);
+          prevPointRef.current = point;
+        }
       }
     };
     window.addEventListener("mousemove", mouseMoveListener);
