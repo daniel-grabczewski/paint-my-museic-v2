@@ -1,10 +1,14 @@
 import { useOnDraw } from './Hooks'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { colors } from '../data'
 
 const Canvas = ({ width, height }) => {
-  const [color, setColor] = useState(colors[3]); // The initial color is black
+  const [color, setColor] = useState(colors[3]); 
   const audioRef = useRef(new Audio(color.music));
+
+  useEffect(() => {
+    audioRef.current.src = color.music;
+  }, [color]);
 
   const { onCanvasMouseDown } = useOnDraw();
 
