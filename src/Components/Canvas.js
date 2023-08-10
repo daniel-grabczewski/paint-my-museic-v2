@@ -1,8 +1,10 @@
-import React from 'react'
-
-const Canvas = () => {
+const Canvas = ({ width, height }) => {
   return (
-    <div>Canvas</div>
+    <canvas
+      width={width}
+      height={height}
+      style={{ border: '1px solid black' }}
+    />
   )
 }
 
