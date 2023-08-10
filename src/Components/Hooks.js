@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export function useOnDraw(onDraw) {
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
   const prevPointRef = useRef(null);
+  const mouseMoveListenerRef = useRef(null);
+  const mouseUpListenerRef = useRef(null);
 
   function computePointInCanvas(clientX, clientY) {
     if (canvasRef.current) {
@@ -32,6 +34,7 @@ export function useOnDraw(onDraw) {
         }
       }
     };
+    mouseMoveListenerRef.current = mouseMoveListener;
     window.addEventListener("mousemove", mouseMoveListener);
   }
 
@@ -40,11 +43,22 @@ export function useOnDraw(onDraw) {
       isDrawingRef.current = false;
       prevPointRef.current = null;
     }
+    mouseUpListenerRef.current = mouseUpListener;
     window.addEventListener("mouseup", mouseUpListener);
   }
 
-  initMouseMoveListener();
-  initMouseUpListener();
+  useEffect(() => {
+    function cleanup() {
+      if (mouseMoveListenerRef.current) {
+        window.removeEventListener("mousemove", mouseMoveListenerRef.current);
+      }
+      if (mouseUpListenerRef.current) {
+        window.removeEventListener("mouseup", mouseUpListenerRef.current);
+      }
+    }
+
+    return () => cleanup();
+  }, []);
 
   return {
     onCanvasMouseDown
