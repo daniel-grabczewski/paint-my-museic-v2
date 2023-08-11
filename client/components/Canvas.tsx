@@ -1,15 +1,18 @@
 import { useOnDraw } from './Hooks'
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { colors } from '../data'
+import { CanvasProps, ColorType, PointType } from '../models'
 
-const Canvas = ({ width, height }) => {
-  const [color, setColor] = useState(colors[3])
+const Canvas = ({ width, height }: CanvasProps) => {
+  const [color, setColor] = useState(colors[3] as ColorType)
 
-  const audioRef = useRef(new Audio(color.music))
+  const audioRef = useRef(new Audio(color.music) as HTMLAudioElement)
 
-  const clearSoundRef = useRef(new Audio('/music/clear.mp3'))
+  const clearSoundRef = useRef(
+    new Audio('/music/clear.mp3') as HTMLAudioElement
+  )
 
-  const ctxRef = useRef(null)
+  const ctxRef = useRef(null as CanvasRenderingContext2D | null)
 
   useEffect(() => {
     audioRef.current.src = color.music
@@ -21,13 +24,26 @@ const Canvas = ({ width, height }) => {
     ctxRef
   )
 
-  function onDraw(ctx, point, prevPoint) {
+  function onDraw(
+    ctx: CanvasRenderingContext2D,
+    point: PointType,
+    prevPoint: PointType | null
+  ) {
     ctxRef.current = ctx
-    drawLine(prevPoint, point, ctx, color.code, 5)
+    if (prevPoint) {
+      drawLine(prevPoint, point, ctx, color.code, 5)
+    }
   }
 
-  function drawLine(start, end, ctx, color, width) {
-    start = start ?? end
+  function drawLine(
+    start: PointType | null,
+    end: PointType | null,
+    ctx: CanvasRenderingContext2D,
+    color: string,
+    width: number
+  ) {
+    if (!start || !end) return 
+
     ctx.beginPath()
     ctx.lineWidth = width
     ctx.strokeStyle = color

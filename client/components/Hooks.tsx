@@ -1,14 +1,21 @@
 import { useEffect, useRef } from 'react'
+import { OnDrawFunc, PointType } from '../models'
 
-export function useOnDraw(onDraw, audioRef, ctxRef) {
-  const canvasRef = useRef(null)
-  const isDrawingRef = useRef(false)
-  const prevPointRef = useRef(null)
 
-  const mouseMoveListenerRef = useRef(null)
-  const mouseUpListenerRef = useRef(null)
 
-  function setCanvasRef(ref) {
+export function useOnDraw(
+  onDraw: OnDrawFunc,
+  audioRef: React.MutableRefObject<HTMLAudioElement>,
+  ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>
+) {
+  const canvasRef = useRef(null as HTMLCanvasElement | null)
+  const isDrawingRef = useRef(false as boolean)
+  const prevPointRef = useRef(null as PointType | null)
+
+  const mouseMoveListenerRef = useRef(null as ((e: MouseEvent) => void) | null)
+  const mouseUpListenerRef = useRef(null as (() => void) | null)
+
+  function setCanvasRef(ref: HTMLCanvasElement | null) {
     canvasRef.current = ref
   }
 
@@ -18,7 +25,7 @@ export function useOnDraw(onDraw, audioRef, ctxRef) {
   }
 
   useEffect(() => {
-    function computePointInCanvas(clientX, clientY) {
+    function computePointInCanvas(clientX : number, clientY : number) {
       if (canvasRef.current) {
         const boundingRect = canvasRef.current.getBoundingClientRect()
         return {
@@ -31,19 +38,19 @@ export function useOnDraw(onDraw, audioRef, ctxRef) {
     }
 
     function initMouseMoveListener() {
-      const mouseMoveListener = (e) => {
+      const mouseMoveListener = (e: MouseEvent) => {
         if (isDrawingRef.current && canvasRef.current) {
           const point = computePointInCanvas(e.clientX, e.clientY)
           const ctx = canvasRef.current.getContext('2d')
           ctxRef.current = ctx
-          if (onDraw) onDraw(ctx, point, prevPointRef.current)
+          if (ctx && point && onDraw) onDraw(ctx, point, prevPointRef.current)
           prevPointRef.current = point
-          console.log(point)
         }
       }
       mouseMoveListenerRef.current = mouseMoveListener
       window.addEventListener('mousemove', mouseMoveListener)
     }
+    
 
     function initMouseUpListener() {
       const listener = () => {
@@ -67,7 +74,7 @@ export function useOnDraw(onDraw, audioRef, ctxRef) {
     initMouseMoveListener()
     initMouseUpListener()
     return () => cleanup()
-  }, [onDraw])
+  }, [onDraw, audioRef, ctxRef])
 
   return {
     setCanvasRef,

@@ -1,8 +1,0 @@
-{
-  "short_name": "Paint My Museic",
-  "name": "Paint while listening to music!",
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
