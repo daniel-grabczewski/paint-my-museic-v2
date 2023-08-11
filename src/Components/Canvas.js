@@ -1,35 +1,45 @@
-import { useOnDraw } from './Hooks'
-import { useState, useRef, useEffect } from 'react'
-import { colors } from '../data'
+import { useOnDraw } from './Hooks';
+import { useState, useRef, useEffect } from 'react';
+import { colors } from '../data';
 
 const Canvas = ({ width, height }) => {
-  const [color, setColor] = useState(colors[3])
-  const audioRef = useRef(new Audio(color.music))
-  const ctxRef = useRef(null)
+  const [color, setColor] = useState(colors[3]);
+  const audioRef = useRef(new Audio(color.music));
+
+  const clearSoundRef = useRef(new Audio('/music/clear.mp3'));
+
+  const ctxRef = useRef(null);
 
   useEffect(() => {
-    audioRef.current.src = color.music
-  }, [color])
+    audioRef.current.src = color.music;
+  }, [color]);
 
-  const { onCanvasMouseDown } = useOnDraw(onDraw, audioRef, ctxRef)
+  const { setCanvasRef, onCanvasMouseDown } = useOnDraw(onDraw, audioRef, ctxRef);
 
   function onDraw(ctx, point, prevPoint) {
-    drawLine(prevPoint, point, ctx, color.code, 5)
+    ctxRef.current = ctx;
+    drawLine(prevPoint, point, ctx, color.code, 5);
   }
 
   function drawLine(start, end, ctx, color, width) {
-    start = start ?? end
-    ctx.beginPath()
-    ctx.lineWidth = width
-    ctx.strokeStyle = color
-    ctx.moveTo(start.x, start.y)
-    ctx.lineTo(end.x, end.y)
-    ctx.stroke()
+    start = start ?? end;
+    ctx.beginPath();
+    ctx.lineWidth = width;
+    ctx.strokeStyle = color;
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(start.x, start.y, 2, 0, 2 * Math.PI);
+    ctx.fill();
   }
 
   function clearCanvas() {
     if (ctxRef.current) {
-      ctxRef.current.clearRect(0, 0, width, height)
+      ctxRef.current.clearRect(0, 0, width, height);
+      clearSoundRef.current.play(); // Play clear sound
     }
   }
 
@@ -39,7 +49,8 @@ const Canvas = ({ width, height }) => {
         width={width}
         height={height}
         onMouseDown={onCanvasMouseDown}
-        style={{ border: '1px solid black' }}
+        style={canvasStyle}
+        ref={setCanvasRef}
       />
       <div
         style={{
@@ -58,7 +69,11 @@ const Canvas = ({ width, height }) => {
               background: c.code,
               height: '50px',
               width: '50px',
-              border: c.color === color.color ? '3px solid black' : 'none',
+              border: c.color === color.color
+                ? c.color === 'black'
+                  ? '3px solid grey'
+                  : '3px solid black'
+                : 'none',
               boxSizing: 'border-box',
             }}
             onClick={() => setColor(c)}
@@ -67,7 +82,11 @@ const Canvas = ({ width, height }) => {
         <button onClick={clearCanvas}>Clear</button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Canvas
+export default Canvas;
+
+const canvasStyle = {
+  border: '1px solid black',
+};
