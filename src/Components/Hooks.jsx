@@ -49,9 +49,7 @@ export function useOnDraw(onDraw, audioRef, ctxRef) {
       const listener = () => {
         isDrawingRef.current = false
         prevPointRef.current = null
-
         audioRef.current.pause()
-        audioRef.current.currentTime = 0
       }
       mouseUpListenerRef.current = listener
       window.addEventListener('mouseup', listener)

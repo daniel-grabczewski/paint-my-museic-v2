@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import { colors } from '../data'
 
 const Canvas = ({ width, height }) => {
-  const [color, setColor] = useState(colors[3]) 
+  const [color, setColor] = useState(colors[3])
 
   const audioRef = useRef(new Audio(color.music))
 
@@ -45,6 +45,8 @@ const Canvas = ({ width, height }) => {
     if (ctxRef.current) {
       ctxRef.current.clearRect(0, 0, width, height)
       clearSoundRef.current.play()
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
     }
   }
 
@@ -82,7 +84,11 @@ const Canvas = ({ width, height }) => {
                   : 'none',
               boxSizing: 'border-box',
             }}
-            onClick={() => setColor(c)}
+            onClick={() => {
+              setColor(c)
+              audioRef.current.pause()
+              audioRef.current.currentTime = 0
+            }}
           ></div>
         ))}
         <button onClick={clearCanvas}>Clear</button>
