@@ -1,24 +1,24 @@
 export const colors = [
   {
     color: 'red',
-    code: '#A71814',
+    code: '#FF4747',
     music: '/music/red.mp3',
     isPicked: false,
     image: '/images/red.jpg',
   },
   {
-    color: 'blue',
-    code: '#383686',
-    music: '/music/blue.mp3',
-    isPicked: false,
-    image: '/images/blue.jpg',
-  },
-  {
     color: 'green',
-    code: '#88C752',
+    code: '#5EE06B',
     music: '/music/green.mp3',
     isPicked: false,
     image: '/images/green.jpg',
+  },
+  {
+    color: 'blue',
+    code: '#4857E0',
+    music: '/music/blue.mp3',
+    isPicked: false,
+    image: '/images/blue.jpg',
   },
   {
     color: 'black',
@@ -29,13 +29,27 @@ export const colors = [
   },
   {
     color: 'pink',
-    code: '#E664bf',
+    code: '#FF6BD3',
     music: '/music/pink.mp3',
     isPicked: false,
     image: '/images/pink.jpg',
   },
   {
-    color: 'white',
+    color: 'yellow',
+    code: '#FFFC52',
+    music: '/music/yellow.mp3',
+    isPicked: false,
+    image: '/images/eraser.jpg',
+  },
+  {
+    color: 'cyan',
+    code: '#73F7FF',
+    music: '/music/cyan.mp3',
+    isPicked: false,
+    image: '/images/eraser.jpg',
+  },
+  {
+    color: 'eraser',
     code: 'white',
     music: '/music/white.mp3',
     isPicked: false,
