@@ -5,6 +5,7 @@ import { CanvasProps, ColorType, PointType } from '../models'
 
 const Canvas = ({ width, height }: CanvasProps) => {
   const [color, setColor] = useState(colors[3] as ColorType)
+  const [brushThickness, setBrushThickness] = useState(5); // Added brush thickness state
 
   const eraser = {
     color: 'eraser',
@@ -13,6 +14,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     isPicked: false,
     image: '/images/eraser.jpg',
   }
+  
   const audioRef = useRef(new Audio(color.music) as HTMLAudioElement)
 
   const clearSoundRef = useRef(
@@ -30,6 +32,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     audioRef,
     ctxRef
   )
+
   function onDraw(
     ctx: CanvasRenderingContext2D,
     point1: PointType,
@@ -38,7 +41,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     point4: PointType
   ) {
     ctxRef.current = ctx
-    drawLine(point1, point2, point3, point4, ctx, color.code, 10)
+    drawLine(point1, point2, point3, point4, ctx, color.code, brushThickness)
   }
 
   function drawLine(
@@ -54,7 +57,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
 
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
-    ctx.lineWidth = width
+    ctx.lineWidth = width // Updated to use the brush thickness
     ctx.strokeStyle = color
 
     ctx.beginPath()
@@ -62,6 +65,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
     ctx.stroke()
   }
+
   function clearCanvas() {
     if (ctxRef.current) {
       ctxRef.current.clearRect(0, 0, width, height)
@@ -128,11 +132,50 @@ const Canvas = ({ width, height }: CanvasProps) => {
           <img src="/images/eraser.svg" alt="" />
         </div>
         <button onClick={clearCanvas}>Clear</button>
+
+        {/* Added brush thickness buttons */}
+        <button
+          style={{
+            backgroundColor: brushThickness === 2 ? '#D0D0D0' : 'white',
+            border: '1px solid #686868',
+            borderRadius: '7px',
+            padding: '5px 10px',
+            marginTop: '10px'
+          }}
+          onClick={() => setBrushThickness(2)}
+        >
+          Thickness 2
+        </button>
+
+        <button
+          style={{
+            backgroundColor: brushThickness === 5 ? '#D0D0D0' : 'white',
+            border: '1px solid #686868',
+            borderRadius: '7px',
+            padding: '5px 10px',
+            marginTop: '10px'
+          }}
+          onClick={() => setBrushThickness(5)}
+        >
+          Thickness 5
+        </button>
+
+        <button
+          style={{
+            backgroundColor: brushThickness === 10 ? '#D0D0D0' : 'white',
+            border: '1px solid #686868',
+            borderRadius: '7px',
+            padding: '5px 10px',
+            marginTop: '10px'
+          }}
+          onClick={() => setBrushThickness(10)}
+        >
+          Thickness 10
+        </button>
       </div>
     </>
   )
 }
-
 
 export default Canvas
 
