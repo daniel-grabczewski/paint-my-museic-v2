@@ -3,8 +3,8 @@ import Canvas from './Canvas'
 
 function App() {
   return (
-    <div className="App">
-      <Canvas width={700} height={500} />
+    <div className="App" style={{ backgroundImage: 'url(images/default-background.svg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
+      <Canvas width={1040} height={750} />
     </div>
   )
 }
