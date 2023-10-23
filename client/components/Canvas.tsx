@@ -1,5 +1,5 @@
 import { useOnDraw } from './Hooks'
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { colors } from '../data'
 import { CanvasProps, ColorType, PointType } from '../models'
 
@@ -132,15 +132,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     </>
   )
 }
-/*
-  {
-    color: 'eraser',
-    code: 'white',
-    music: '/music/white.mp3',
-    isPicked: false,
-    image: '/images/eraser.jpg',
-  },
-  */
+
 
 export default Canvas
 
