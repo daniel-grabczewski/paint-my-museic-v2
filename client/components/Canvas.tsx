@@ -99,13 +99,9 @@ const Canvas = ({ width, height }: CanvasProps) => {
               background: c.code,
               height: '60px',
               width: '60px',
-              border:
-                c.color === color.color
-                  ? c.color === 'black'
-                    ? '3px solid grey'
-                    : '3px solid black'
-                  : 'none',
+              border: c.color === color.color ? '4px solid #686868' : 'none',
               boxSizing: 'border-box',
+              borderRadius: '7px',
             }}
             onClick={() => {
               setColor(c)
@@ -115,18 +111,23 @@ const Canvas = ({ width, height }: CanvasProps) => {
           ></div>
         ))}
         <div
-          
           onClick={() => {
             setColor(eraser)
             audioRef.current.pause()
             audioRef.current.currentTime = 0
           }}
+          style={{
+            paddingTop: '1px',
+            height: '52px',
+            width: '53px',
+            borderRadius: '7px',
+            border:
+              color.color === 'eraser'
+                ? '4px solid #686868'
+                : '4px solid white',
+          }}
         >
-          <img src="/images/eraser.svg" alt="" style={{
-          
-          //filter: color.color === 'eraser' ? 'red' : 'none'
-          
-        }}/>
+          <img src="/images/eraser.svg" alt="" />
         </div>
         <button onClick={clearCanvas}>Clear</button>
       </div>
