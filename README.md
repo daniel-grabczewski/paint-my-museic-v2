@@ -9,4 +9,3 @@
 
 ## Updates coming soon:
 - Styling overhaul
-- Color picker for custom color
