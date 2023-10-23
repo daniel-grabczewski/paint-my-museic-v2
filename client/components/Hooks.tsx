@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { OnDrawFunc, PointType } from '../models'
 
 export function useOnDraw(
-  onDraw: OnDrawFunc,
+  onDraw: (ctx: CanvasRenderingContext2D, point1: PointType, point2: PointType, point3: PointType, point4: PointType) => void,
   audioRef: React.MutableRefObject<HTMLAudioElement>,
   ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>
 ) {
@@ -27,11 +27,11 @@ export function useOnDraw(
       const point = computePointInCanvas(e.clientX, e.clientY);
       if (point) {
         lastTwoPoints.current.push(point);
-  
-        if (lastTwoPoints.current.length === 3) {
+    
+        if (lastTwoPoints.current.length === 4) {
           const ctx = canvasRef.current.getContext('2d');
           ctxRef.current = ctx;
-          if (ctx && onDraw) onDraw(ctx, lastTwoPoints.current[0], lastTwoPoints.current[1], point);
+          if (ctx && onDraw) onDraw(ctx, lastTwoPoints.current[0], lastTwoPoints.current[1], lastTwoPoints.current[2], lastTwoPoints.current[3]);
           lastTwoPoints.current.shift();
         }
       }

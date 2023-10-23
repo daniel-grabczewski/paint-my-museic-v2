@@ -30,26 +30,27 @@ const Canvas = ({ width, height }: CanvasProps) => {
     audioRef,
     ctxRef
   )
-
   function onDraw(
     ctx: CanvasRenderingContext2D,
-    point: PointType,
-    prevPoint: PointType | null
+    point1: PointType,
+    point2: PointType,
+    point3: PointType,
+    point4: PointType
   ) {
     ctxRef.current = ctx
-    if (prevPoint) {
-      drawLine(prevPoint, point, ctx, color.code, 10)
-    }
+    drawLine(point1, point2, point3, point4, ctx, color.code, 10)
   }
 
   function drawLine(
-    start: PointType | null,
-    end: PointType | null,
+    p0: PointType | null,
+    p1: PointType,
+    p2: PointType,
+    p3: PointType | null,
     ctx: CanvasRenderingContext2D,
     color: string,
     width: number
   ) {
-    if (!start || !end) return
+    if (!p0 || !p3) return
 
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
@@ -57,17 +58,10 @@ const Canvas = ({ width, height }: CanvasProps) => {
     ctx.strokeStyle = color
 
     ctx.beginPath()
-    ctx.moveTo(start.x, start.y)
-    ctx.quadraticCurveTo(
-      start.x,
-      start.y,
-      (start.x + end.x) / 2,
-      (start.y + end.y) / 2
-    )
-    ctx.quadraticCurveTo(end.x, end.y, end.x, end.y)
+    ctx.moveTo(p1.x, p1.y)
+    ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
     ctx.stroke()
   }
-
   function clearCanvas() {
     if (ctxRef.current) {
       ctxRef.current.clearRect(0, 0, width, height)
