@@ -6,6 +6,7 @@ import { CanvasProps, ColorType, PointType } from '../models'
 const Canvas = ({ width, height }: CanvasProps) => {
   const [color, setColor] = useState(colors[3] as ColorType)
   const [brushThickness, setBrushThickness] = useState(5)
+  const [hoveredThickness, setHoveredThickness] = useState<number | null>(null)
 
   const eraser = {
     color: 'eraser',
@@ -143,8 +144,12 @@ const Canvas = ({ width, height }: CanvasProps) => {
                 justifyContent: 'flex-end',
                 marginBottom: index !== 2 ? '5px' : '0px',
                 position: 'relative',
+                cursor: 'pointer',
+                transition: 'background 0.3s',
               }}
-              onClick={() => setBrushThickness(thickness)}
+              onClick={() => setBrushThickness(thickness + 1)}
+              onMouseEnter={() => setHoveredThickness(thickness)}
+              onMouseLeave={() => setHoveredThickness(null)}
             >
               {brushThickness === thickness ? (
                 <div
@@ -157,16 +162,18 @@ const Canvas = ({ width, height }: CanvasProps) => {
                     height: 0,
                     borderTop: '7px solid transparent',
                     borderBottom: '7px solid transparent',
-                    borderLeft: '8px solid #686868', 
+                    borderLeft: '8px solid #686868',
                   }}
                 ></div>
               ) : null}
 
               <div
                 style={{
-                  background: 'black',
+                  background:
+                    hoveredThickness === thickness ? '#686868' : 'black',
                   height: `${thickness + 3}px`,
                   width: '80%',
+                  transition: 'background 0.3s',
                 }}
               ></div>
             </div>
