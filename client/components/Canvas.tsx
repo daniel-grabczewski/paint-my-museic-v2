@@ -5,7 +5,7 @@ import { CanvasProps, ColorType, PointType } from '../models'
 
 const Canvas = ({ width, height }: CanvasProps) => {
   const [color, setColor] = useState(colors[3] as ColorType)
-  const [brushThickness, setBrushThickness] = useState(5); // Added brush thickness state
+  const [brushThickness, setBrushThickness] = useState(5)
 
   const eraser = {
     color: 'eraser',
@@ -14,7 +14,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     isPicked: false,
     image: '/images/eraser.jpg',
   }
-  
+
   const audioRef = useRef(new Audio(color.music) as HTMLAudioElement)
 
   const clearSoundRef = useRef(
@@ -133,45 +133,19 @@ const Canvas = ({ width, height }: CanvasProps) => {
         </div>
         <button onClick={clearCanvas}>Clear</button>
 
-        {/* Added brush thickness buttons */}
-        <button
-          style={{
-            backgroundColor: brushThickness === 2 ? '#D0D0D0' : 'white',
-            border: '1px solid #686868',
-            borderRadius: '7px',
-            padding: '5px 10px',
-            marginTop: '10px'
-          }}
-          onClick={() => setBrushThickness(2)}
-        >
-          Thickness 2
-        </button>
-
-        <button
-          style={{
-            backgroundColor: brushThickness === 5 ? '#D0D0D0' : 'white',
-            border: '1px solid #686868',
-            borderRadius: '7px',
-            padding: '5px 10px',
-            marginTop: '10px'
-          }}
-          onClick={() => setBrushThickness(5)}
-        >
-          Thickness 5
-        </button>
-
-        <button
-          style={{
-            backgroundColor: brushThickness === 10 ? '#D0D0D0' : 'white',
-            border: '1px solid #686868',
-            borderRadius: '7px',
-            padding: '5px 10px',
-            marginTop: '10px'
-          }}
-          onClick={() => setBrushThickness(10)}
-        >
-          Thickness 10
-        </button>
+        <div>
+          {[2, 5, 10].map((thickness) => (
+            <div
+              key={thickness}
+              style={{
+                background: 'black',
+                height: `${thickness + 3}px`,
+                marginBottom: '5px',
+              }}
+              onClick={() => setBrushThickness(thickness)}
+            ></div>
+          ))}
+        </div>
       </div>
     </>
   )
@@ -181,6 +155,6 @@ export default Canvas
 
 const canvasStyle = {
   backgroundColor: 'white',
-  borderRadius : '35px',
-  boxShadow: '0px 15px 45px rgba(0, 0, 0, 0.5)'
+  borderRadius: '35px',
+  boxShadow: '0px 15px 45px rgba(0, 0, 0, 0.5)',
 }
