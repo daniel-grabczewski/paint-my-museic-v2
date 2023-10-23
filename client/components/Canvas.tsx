@@ -38,7 +38,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
   ) {
     ctxRef.current = ctx
     if (prevPoint) {
-      drawLine(prevPoint, point, ctx, color.code, 5)
+      drawLine(prevPoint, point, ctx, color.code, 10)
     }
   }
 
@@ -51,17 +51,21 @@ const Canvas = ({ width, height }: CanvasProps) => {
   ) {
     if (!start || !end) return
 
-    ctx.beginPath()
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
     ctx.lineWidth = width
     ctx.strokeStyle = color
-    ctx.moveTo(start.x, start.y)
-    ctx.lineTo(end.x, end.y)
-    ctx.stroke()
 
-    ctx.fillStyle = color
     ctx.beginPath()
-    ctx.arc(start.x, start.y, 2, 0, 2 * Math.PI)
-    ctx.fill()
+    ctx.moveTo(start.x, start.y)
+    ctx.quadraticCurveTo(
+      start.x,
+      start.y,
+      (start.x + end.x) / 2,
+      (start.y + end.y) / 2
+    )
+    ctx.quadraticCurveTo(end.x, end.y, end.x, end.y)
+    ctx.stroke()
   }
 
   function clearCanvas() {
