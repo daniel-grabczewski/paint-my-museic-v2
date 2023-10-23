@@ -134,16 +134,42 @@ const Canvas = ({ width, height }: CanvasProps) => {
         <button onClick={clearCanvas}>Clear</button>
 
         <div>
-          {[2, 5, 10].map((thickness) => (
+          {[2, 5, 10].map((thickness, index) => (
             <div
               key={thickness}
               style={{
-                background: 'black',
-                height: `${thickness + 3}px`,
-                marginBottom: '5px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                marginBottom: index !== 2 ? '5px' : '0px',
+                position: 'relative',
               }}
               onClick={() => setBrushThickness(thickness)}
-            ></div>
+            >
+              {brushThickness === thickness ? (
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 'calc(80% + 5px)',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: 0,
+                    height: 0,
+                    borderTop: '7px solid transparent',
+                    borderBottom: '7px solid transparent',
+                    borderLeft: '8px solid #686868', 
+                  }}
+                ></div>
+              ) : null}
+
+              <div
+                style={{
+                  background: 'black',
+                  height: `${thickness + 3}px`,
+                  width: '80%',
+                }}
+              ></div>
+            </div>
           ))}
         </div>
       </div>
