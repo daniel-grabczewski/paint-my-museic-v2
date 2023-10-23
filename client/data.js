@@ -48,6 +48,7 @@ export const colors = [
     isPicked: false,
     image: '/images/eraser.jpg',
   },
+  /*
   {
     color: 'eraser',
     code: 'white',
@@ -55,4 +56,5 @@ export const colors = [
     isPicked: false,
     image: '/images/eraser.jpg',
   },
+  */
 ]

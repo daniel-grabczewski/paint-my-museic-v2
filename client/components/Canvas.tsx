@@ -6,6 +6,13 @@ import { CanvasProps, ColorType, PointType } from '../models'
 const Canvas = ({ width, height }: CanvasProps) => {
   const [color, setColor] = useState(colors[3] as ColorType)
 
+  const eraser = {
+    color: 'eraser',
+    code: 'white',
+    music: '/music/white.mp3',
+    isPicked: false,
+    image: '/images/eraser.jpg',
+  }
   const audioRef = useRef(new Audio(color.music) as HTMLAudioElement)
 
   const clearSoundRef = useRef(
@@ -42,7 +49,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     color: string,
     width: number
   ) {
-    if (!start || !end) return 
+    if (!start || !end) return
 
     ctx.beginPath()
     ctx.lineWidth = width
@@ -81,7 +88,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          background: 'lightGray',
+          background: 'white',
           padding: '10px',
         }}
       >
@@ -90,8 +97,8 @@ const Canvas = ({ width, height }: CanvasProps) => {
             key={c.color}
             style={{
               background: c.code,
-              height: '50px',
-              width: '50px',
+              height: '60px',
+              width: '60px',
               border:
                 c.color === color.color
                   ? c.color === 'black'
@@ -107,11 +114,34 @@ const Canvas = ({ width, height }: CanvasProps) => {
             }}
           ></div>
         ))}
+        <div
+          
+          onClick={() => {
+            setColor(eraser)
+            audioRef.current.pause()
+            audioRef.current.currentTime = 0
+          }}
+        >
+          <img src="/images/eraser.svg" alt="" style={{
+          
+          //filter: color.color === 'eraser' ? 'red' : 'none'
+          
+        }}/>
+        </div>
         <button onClick={clearCanvas}>Clear</button>
       </div>
     </>
   )
 }
+/*
+  {
+    color: 'eraser',
+    code: 'white',
+    music: '/music/white.mp3',
+    isPicked: false,
+    image: '/images/eraser.jpg',
+  },
+  */
 
 export default Canvas
 
