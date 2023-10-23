@@ -180,5 +180,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
 export default Canvas
 
 const canvasStyle = {
-  border: '1px solid black',
+  backgroundColor: 'white',
+  borderRadius : '35px',
+  boxShadow: '0px 15px 45px rgba(0, 0, 0, 0.5)'
 }
