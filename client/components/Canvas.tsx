@@ -2,6 +2,7 @@ import { useOnDraw } from './Hooks'
 import { useState, useRef, useEffect } from 'react'
 import { colors } from '../data'
 import { CanvasProps, ColorType, PointType } from '../models'
+import '../main.css'
 
 const Canvas = ({ width, height }: CanvasProps) => {
   const [color, setColor] = useState(colors[3] as ColorType)
@@ -82,121 +83,61 @@ const Canvas = ({ width, height }: CanvasProps) => {
         width={width}
         height={height}
         onMouseDown={onCanvasMouseDown}
-        style={canvasStyle}
+        className="canvas-style"
         ref={setCanvasRef}
       />
 
-      <div
-        style={{
-          marginLeft: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          height: '775px',
-          boxSizing: 'border-box',
-        }}
-      >
-        {/* Color and Eraser Selection */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            background: 'white',
-            padding: '28px',
-            borderRadius: '30px',
-            marginBottom: '22px',
-            gap: '14px',
-          }}
-        >
+      <div className="tools-wrapper">
+        <div className="color-selection">
           {colors.map((c) => (
             <div
               key={c.color}
-              style={{
-                background: c.code,
-                height: '60px',
-                width: '60px',
-                border: c.color === color.color ? '4px solid #686868' : 'none',
-                boxSizing: 'border-box',
-                borderRadius: '7px',
-              }}
+              className={`color-option ${
+                c.color === color.color ? 'selected' : ''
+              }`}
               onClick={() => {
                 setColor(c)
                 audioRef.current.pause()
                 audioRef.current.currentTime = 0
               }}
+              style={{ background: `${c.code}` }}
             ></div>
           ))}
           <div
+            className={`eraser-option ${
+              color.color === 'eraser' ? 'selected' : ''
+            }`}
             onClick={() => {
               setColor(eraser)
               audioRef.current.pause()
               audioRef.current.currentTime = 0
             }}
-            style={{
-              paddingTop: '1px',
-              height: '45px',
-              width: '45px',
-              borderRadius: '7px',
-              border:
-                color.color === 'eraser'
-                  ? '4px solid #686868'
-                  : '4px solid white',
-            }}
           >
             <img src="/images/eraser.svg" alt="" />
           </div>
-          <button onClick={clearCanvas} style = {{color : 'white', background : '#686868', border : 'none', borderRadius : '10px', padding : '5px', fontSize : '15px', cursor : 'pointer'}}
-          >clear</button>
+          <button className="clear-button" onClick={clearCanvas}>
+            clear
+          </button>
         </div>
 
-        {/* Thickness Selection */}
-        <div
-          style={{
-            background: 'white',
-            padding: '24px 28px',
-            borderRadius: '30px',
-            boxSizing: 'border-box',
-          }}
-        >
+        <div className="thickness-wrapper">
           {[2, 5, 10].map((thickness, index) => (
             <div
               key={thickness}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                marginBottom: index !== 2 ? '5px' : '0px',
-                position: 'relative',
-                cursor: 'pointer',
-                transition: 'background 0.3s',
-              }}
+              className="thickness-option"
               onClick={() => setBrushThickness(thickness)}
               onMouseEnter={() => setHoveredThickness(thickness)}
               onMouseLeave={() => setHoveredThickness(null)}
             >
               {brushThickness === thickness ? (
-                <div
-                  style={{
-                    position: 'absolute',
-                    right: 'calc(80% + 15px)', // Adjust this value
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: 0,
-                    height: 0,
-                    borderTop: '7px solid transparent',
-                    borderBottom: '7px solid transparent',
-                    borderLeft: '8px solid #686868',
-                  }}
-                ></div>
+                <div className="arrow"></div>
               ) : null}
-
               <div
+                className="thickness-bar"
                 style={{
+                  height: `${thickness + 3}px`,
                   background:
                     hoveredThickness === thickness ? '#686868' : 'black',
-                  height: `${thickness + 3}px`,
-                  width: '58px',
-                  transition: 'background 0.3s',
                 }}
               ></div>
             </div>
@@ -208,9 +149,3 @@ const Canvas = ({ width, height }: CanvasProps) => {
 }
 
 export default Canvas
-
-const canvasStyle = {
-  backgroundColor: 'white',
-  borderRadius: '35px',
-  boxShadow: '0px 15px 45px rgba(0, 0, 0, 0.5)',
-}
