@@ -50,15 +50,16 @@ const Canvas = ({ width, height }: CanvasProps) => {
   }
 
   return (
-    <>
-      <canvas
-        width={width}
-        height={height}
-        onMouseDown={onCanvasMouseDown}
-        className="canvas-style"
-        ref={setCanvasRef}
-      />
-
+    <div className="container">
+      <div className="canvas-container">
+        <canvas
+          width={width}
+          height={height}
+          onMouseDown={onCanvasMouseDown}
+          className="canvas-style"
+          ref={setCanvasRef}
+        />
+      </div>
       <div className="tools-wrapper">
         <ColorPanel
           colors={colors}
@@ -74,7 +75,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
           setHoveredThickness={setHoveredThickness}
         />
       </div>
-    </>
+    </div>
   )
 }
 

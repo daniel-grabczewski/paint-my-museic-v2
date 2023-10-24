@@ -1,6 +1,12 @@
 * {
-  margin : 0px;
-  padding : 0px;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
 .App {
@@ -9,23 +15,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 50px 0; 
 }
- 
+
+.container {
+  display: flex;
+  justify-content: center; 
+  max-width: calc(1050 + 120 + 50px); /* canvas width + panel width + gap between canvas and panel  */
+  flex-wrap: nowrap;
+  margin: 0 auto; 
+}
+
 /* Canvas */
+.canvas-container {
+  grid-area: canvas;
+  margin-right: 30px; 
+}
 .canvas-style {
   background-color: white;
   border-radius: 35px;
   box-shadow: 0px 15px 45px rgba(0, 0, 0, 0.5);
+  max-height: calc(100vh - 100px - 15px);
 }
 
 /* Tools Wrapper */
 .tools-wrapper {
-  margin-left: 20px;
+  grid-area: tools;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 775px;
-  box-sizing: border-box;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 /* Color and Eraser Selection */
@@ -107,4 +127,29 @@
 }
 .thickness-bar:hover {
   background: #686868;
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .canvas-style {
+    margin: 0 auto;
+  }
+
+  .tools-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;  
+  }
+
+  /* Change direction for color options when below canvas */
+  .color-selection {
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
 }
