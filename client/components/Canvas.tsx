@@ -85,59 +85,78 @@ const Canvas = ({ width, height }: CanvasProps) => {
         style={canvasStyle}
         ref={setCanvasRef}
       />
+
       <div
         style={{
           marginLeft: '20px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '14px',
-          background: 'white',
-          padding: '30px 30px',
-          borderRadius : '30px',
-          height : '750px',
+          alignItems: 'center',
+          height: '750px',
           boxSizing: 'border-box',
         }}
       >
-        {colors.map((c) => (
+        {/* Color and Eraser Selection */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            background: 'white',
+            padding: '30px',
+            borderRadius: '30px',
+            marginBottom: '20px',
+            gap: '14px',
+          }}
+        >
+          {colors.map((c) => (
+            <div
+              key={c.color}
+              style={{
+                background: c.code,
+                height: '60px',
+                width: '60px',
+                border: c.color === color.color ? '4px solid #686868' : 'none',
+                boxSizing: 'border-box',
+                borderRadius: '7px',
+              }}
+              onClick={() => {
+                setColor(c)
+                audioRef.current.pause()
+                audioRef.current.currentTime = 0
+              }}
+            ></div>
+          ))}
           <div
-            key={c.color}
-            style={{
-              background: c.code,
-              height: '60px',
-              width: '60px',
-              border: c.color === color.color ? '4px solid #686868' : 'none',
-              boxSizing: 'border-box',
-              borderRadius: '7px',
-            }}
             onClick={() => {
-              setColor(c)
+              setColor(eraser)
               audioRef.current.pause()
               audioRef.current.currentTime = 0
             }}
-          ></div>
-        ))}
+            style={{
+              paddingTop: '1px',
+              height: '45px',
+              width: '45px',
+              borderRadius: '7px',
+              border:
+                color.color === 'eraser'
+                  ? '4px solid #686868'
+                  : '4px solid white',
+            }}
+          >
+            <img src="/images/eraser.svg" alt="" />
+          </div>
+          <button onClick={clearCanvas}>Clear</button>
+        </div>
+
+        {/* Thickness Selection */}
         <div
-          onClick={() => {
-            setColor(eraser)
-            audioRef.current.pause()
-            audioRef.current.currentTime = 0
-          }}
           style={{
-            paddingTop: '1px',
-            height: '52px',
-            width: '53px',
-            borderRadius: '7px',
-            border:
-              color.color === 'eraser'
-                ? '4px solid #686868'
-                : '4px solid white',
+            background: 'white',
+            padding: '24px 30px',
+            borderRadius: '30px',
+            boxSizing: 'border-box',
           }}
         >
-          <img src="/images/eraser.svg" alt="" />
-        </div>
-        <button onClick={clearCanvas}>Clear</button>
-
-        <div>
           {[2, 5, 10].map((thickness, index) => (
             <div
               key={thickness}
@@ -158,7 +177,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
                 <div
                   style={{
                     position: 'absolute',
-                    right: 'calc(80% + 5px)',
+                    right: 'calc(80% + 15px)', // Adjust this value
                     top: '50%',
                     transform: 'translateY(-50%)',
                     width: 0,
@@ -175,7 +194,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
                   background:
                     hoveredThickness === thickness ? '#686868' : 'black',
                   height: `${thickness + 3}px`,
-                  width: '80%',
+                  width: '58px',
                   transition: 'background 0.3s',
                 }}
               ></div>
