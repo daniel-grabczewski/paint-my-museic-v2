@@ -9,6 +9,11 @@ const Canvas = ({ width, height }: CanvasProps) => {
   const [brushThickness, setBrushThickness] = useState(5)
   const [hoveredThickness, setHoveredThickness] = useState<number | null>(null)
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key === 'Enter' || e.key === 'Space') {
+      e.preventDefault()
+    }
+  }
   const eraser = {
     color: 'eraser',
     code: 'white',
@@ -59,7 +64,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
 
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
-    ctx.lineWidth = width // Updated to use the brush thickness
+    ctx.lineWidth = width
     ctx.strokeStyle = color
 
     ctx.beginPath()
@@ -100,6 +105,9 @@ const Canvas = ({ width, height }: CanvasProps) => {
                 audioRef.current.pause()
                 audioRef.current.currentTime = 0
               }}
+              onKeyDown={handleKeyDown}
+              role="button"
+              tabIndex={0}
               style={{ background: `${c.code}` }}
             ></div>
           ))}
@@ -112,8 +120,11 @@ const Canvas = ({ width, height }: CanvasProps) => {
               audioRef.current.pause()
               audioRef.current.currentTime = 0
             }}
+            onKeyDown={handleKeyDown}
+            role="button"
+            tabIndex={0}
           >
-            <img src="/images/eraser.svg" alt="" />
+            <img src="/images/eraser.svg" alt="Eraser Icon" />
           </div>
           <button className="clear-button" onClick={clearCanvas}>
             clear
@@ -121,11 +132,14 @@ const Canvas = ({ width, height }: CanvasProps) => {
         </div>
 
         <div className="thickness-wrapper">
-          {[2, 5, 10].map((thickness, index) => (
+          {[2, 5, 10].map((thickness) => (
             <div
               key={thickness}
               className="thickness-option"
               onClick={() => setBrushThickness(thickness)}
+              onKeyDown={handleKeyDown}
+              role="button"
+              tabIndex={0}
               onMouseEnter={() => setHoveredThickness(thickness)}
               onMouseLeave={() => setHoveredThickness(null)}
             >
