@@ -90,9 +90,12 @@ const Canvas = ({ width, height }: CanvasProps) => {
           marginLeft: '20px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px',
+          gap: '14px',
           background: 'white',
-          padding: '10px',
+          padding: '30px 30px',
+          borderRadius : '30px',
+          height : '750px',
+          boxSizing: 'border-box',
         }}
       >
         {colors.map((c) => (
@@ -147,7 +150,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
                 cursor: 'pointer',
                 transition: 'background 0.3s',
               }}
-              onClick={() => setBrushThickness(thickness + 1)}
+              onClick={() => setBrushThickness(thickness)}
               onMouseEnter={() => setHoveredThickness(thickness)}
               onMouseLeave={() => setHoveredThickness(null)}
             >
