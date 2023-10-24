@@ -92,7 +92,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          height: '750px',
+          height: '775px',
           boxSizing: 'border-box',
         }}
       >
@@ -102,9 +102,9 @@ const Canvas = ({ width, height }: CanvasProps) => {
             display: 'flex',
             flexDirection: 'column',
             background: 'white',
-            padding: '30px',
+            padding: '28px',
             borderRadius: '30px',
-            marginBottom: '20px',
+            marginBottom: '22px',
             gap: '14px',
           }}
         >
@@ -145,14 +145,15 @@ const Canvas = ({ width, height }: CanvasProps) => {
           >
             <img src="/images/eraser.svg" alt="" />
           </div>
-          <button onClick={clearCanvas}>Clear</button>
+          <button onClick={clearCanvas} style = {{color : 'white', background : '#686868', border : 'none', borderRadius : '10px', padding : '5px', fontSize : '15px', cursor : 'pointer'}}
+          >clear</button>
         </div>
 
         {/* Thickness Selection */}
         <div
           style={{
             background: 'white',
-            padding: '24px 30px',
+            padding: '24px 28px',
             borderRadius: '30px',
             boxSizing: 'border-box',
           }}
