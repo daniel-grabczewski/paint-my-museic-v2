@@ -2,8 +2,9 @@ import { useOnDraw } from './Hooks'
 import { useState, useRef, useEffect } from 'react'
 import { colors } from '../data'
 import { CanvasProps, ColorType, PointType } from '../models'
-import '../main.css'
-import {drawLine, eraser, handleKeyDown} from '../utils/canvasUtils'
+import { drawLine } from '../utils/canvasUtils'
+import ColorPanel from './ColorPanel'
+import BrushThicknessPanel from './BrushThicknessPanel'
 
 const Canvas = ({ width, height }: CanvasProps) => {
   const [color, setColor] = useState(colors[3] as ColorType)
@@ -59,70 +60,19 @@ const Canvas = ({ width, height }: CanvasProps) => {
       />
 
       <div className="tools-wrapper">
-        <div className="color-selection">
-          {colors.map((c) => (
-            <div
-              key={c.color}
-              className={`color-option ${
-                c.color === color.color ? 'selected' : ''
-              }`}
-              onClick={() => {
-                setColor(c)
-                audioRef.current.pause()
-                audioRef.current.currentTime = 0
-              }}
-              onKeyDown={handleKeyDown}
-              role="button"
-              tabIndex={0}
-              style={{ background: `${c.code}` }}
-            ></div>
-          ))}
-          <div
-            className={`eraser-option ${
-              color.color === 'eraser' ? 'selected' : ''
-            }`}
-            onClick={() => {
-              setColor(eraser)
-              audioRef.current.pause()
-              audioRef.current.currentTime = 0
-            }}
-            onKeyDown={handleKeyDown}
-            role="button"
-            tabIndex={0}
-          >
-            <img src="/images/eraser.svg" alt="Eraser Icon" />
-          </div>
-          <button className="clear-button" onClick={clearCanvas}>
-            clear
-          </button>
-        </div>
-
-        <div className="thickness-wrapper">
-          {[2, 5, 10].map((thickness) => (
-            <div
-              key={thickness}
-              className="thickness-option"
-              onClick={() => setBrushThickness(thickness)}
-              onKeyDown={handleKeyDown}
-              role="button"
-              tabIndex={0}
-              onMouseEnter={() => setHoveredThickness(thickness)}
-              onMouseLeave={() => setHoveredThickness(null)}
-            >
-              {brushThickness === thickness ? (
-                <div className="arrow"></div>
-              ) : null}
-              <div
-                className="thickness-bar"
-                style={{
-                  height: `${thickness + 3}px`,
-                  background:
-                    hoveredThickness === thickness ? '#686868' : 'black',
-                }}
-              ></div>
-            </div>
-          ))}
-        </div>
+        <ColorPanel
+          colors={colors}
+          color={color}
+          setColor={setColor}
+          audioRef={audioRef}
+          clearCanvas={clearCanvas}
+        />
+        <BrushThicknessPanel
+          brushThickness={brushThickness}
+          setBrushThickness={setBrushThickness}
+          hoveredThickness={hoveredThickness}
+          setHoveredThickness={setHoveredThickness}
+        />
       </div>
     </>
   )
