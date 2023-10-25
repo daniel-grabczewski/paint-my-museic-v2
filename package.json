@@ -4,11 +4,15 @@
   "description": "React!",
   "repository": "https://github.com/daniel-grabczewski/paint-my-museic-v2.git",
   "main": "server/index.js",
+  "homepage": "https://github.com/daniel-grabczewski/paint-my-museic-v2",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
     "test": "vitest",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": "@devacademy/eslint-config/react",
@@ -34,6 +38,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^6.0.0",
     "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
     "prettier": "2.6.1",
