@@ -22,13 +22,6 @@ export function drawLine(
   ctx.stroke()
 }
 
-export const eraser = {
-  color: 'eraser',
-  code: 'white',
-  music: '/music/white.mp3',
-  isPicked: false,
-  image: '/images/eraser.jpg',
-}
 
 export function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
   if (e.key === 'Enter' || e.key === 'Space') {

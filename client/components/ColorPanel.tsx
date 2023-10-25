@@ -1,6 +1,7 @@
 import React from 'react'
 import { ColorType } from '../models'
-import { eraser, handleKeyDown } from '../utils/canvasUtils'
+import { handleKeyDown } from '../utils/canvasUtils'
+import {eraser} from '../data'
 
 interface ColorPanelProps {
   colors: ColorType[]
@@ -53,7 +54,7 @@ const ColorPanel: React.FC<ColorPanelProps> = ({
         role="button"
         tabIndex={0}
       >
-        <img src="/images/eraser.svg" alt="Eraser Icon" />
+        <img src={eraser.image} alt="Eraser Icon" />
       </div>
       <button className="clear-button" onClick={clearCanvas}>
         clear

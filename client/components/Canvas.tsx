@@ -1,6 +1,6 @@
 import { useOnDraw } from './Hooks'
 import { useState, useRef, useEffect } from 'react'
-import { colors } from '../data'
+import { colors, clearSound } from '../data'
 import { CanvasProps, ColorType, PointType } from '../models'
 import { drawLine } from '../utils/canvasUtils'
 import ColorPanel from './ColorPanel'
@@ -14,7 +14,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
   const audioRef = useRef(new Audio(color.music) as HTMLAudioElement)
 
   const clearSoundRef = useRef(
-    new Audio('/music/clear.mp3') as HTMLAudioElement
+    new Audio(`${clearSound}`) as HTMLAudioElement
   )
 
   const ctxRef = useRef(null as CanvasRenderingContext2D | null)
