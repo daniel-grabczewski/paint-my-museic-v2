@@ -33,7 +33,6 @@ export function useOnDraw(
       const point = computePointInCanvas(e.clientX, e.clientY)
       if (point) {
         lastTwoPoints.current.push(point)
-
         if (lastTwoPoints.current.length === 4) {
           const ctx = canvasRef.current.getContext('2d')
           ctxRef.current = ctx
@@ -59,22 +58,77 @@ export function useOnDraw(
     }
   }
 
-  useEffect(() => {
-    function initMouseMoveListener() {
-      window.addEventListener('mousemove', mouseMoveListener)
+  const touchStartListener = (e: TouchEvent) => {
+    isDrawingRef.current = true
+    const point = computePointInCanvas(
+      e.touches[0].clientX,
+      e.touches[0].clientY
+    )
+    if (point) {
+      lastTwoPoints.current.push(point)
     }
+    if (audioRef.current) {
+      audioRef.current
+        .play()
+        .catch((error) => console.error('Audio play failed', error))
+    }
+  }
 
-    function initMouseUpListener() {
-      window.addEventListener('mouseup', mouseUpListener)
+  const touchMoveListener = (e: TouchEvent) => {
+    if (isDrawingRef.current && canvasRef.current) {
+      const point = computePointInCanvas(
+        e.touches[0].clientX,
+        e.touches[0].clientY
+      )
+      if (point) {
+        lastTwoPoints.current.push(point)
+        if (lastTwoPoints.current.length === 4) {
+          const ctx = canvasRef.current.getContext('2d')
+          ctxRef.current = ctx
+          if (ctx && onDraw)
+            onDraw(
+              ctx,
+              lastTwoPoints.current[0],
+              lastTwoPoints.current[1],
+              lastTwoPoints.current[2],
+              lastTwoPoints.current[3]
+            )
+          lastTwoPoints.current.shift()
+        }
+      }
+    }
+  }
+
+  const touchEndListener = () => {
+    isDrawingRef.current = false
+    lastTwoPoints.current = []
+    if (audioRef.current) {
+      audioRef.current.pause()
+    }
+  }
+
+  useEffect(() => {
+    function initEventListeners() {
+      if (canvasRef.current) {
+        canvasRef.current.addEventListener('mousemove', mouseMoveListener)
+        canvasRef.current.addEventListener('mouseup', mouseUpListener)
+        canvasRef.current.addEventListener('touchstart', touchStartListener)
+        canvasRef.current.addEventListener('touchmove', touchMoveListener)
+        canvasRef.current.addEventListener('touchend', touchEndListener)
+      }
     }
 
     function cleanup() {
-      window.removeEventListener('mousemove', mouseMoveListener)
-      window.removeEventListener('mouseup', mouseUpListener)
+      if (canvasRef.current) {
+        canvasRef.current.removeEventListener('mousemove', mouseMoveListener)
+        canvasRef.current.removeEventListener('mouseup', mouseUpListener)
+        canvasRef.current.removeEventListener('touchstart', touchStartListener)
+        canvasRef.current.removeEventListener('touchmove', touchMoveListener)
+        canvasRef.current.removeEventListener('touchend', touchEndListener)
+      }
     }
 
-    initMouseMoveListener()
-    initMouseUpListener()
+    initEventListeners()
     return () => cleanup()
   }, [onDraw, audioRef, ctxRef])
 
@@ -82,7 +136,7 @@ export function useOnDraw(
     setCanvasRef: (ref: HTMLCanvasElement | null) => {
       canvasRef.current = ref
     },
-    onCanvasMouseDown: () => {
+    onCanvasInteraction: () => {
       isDrawingRef.current = true
       if (audioRef.current) {
         audioRef.current
