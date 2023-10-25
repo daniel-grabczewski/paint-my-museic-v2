@@ -11,19 +11,15 @@ const Canvas = ({ width, height }: CanvasProps) => {
   const [brushThickness, setBrushThickness] = useState(5)
   const [hoveredThickness, setHoveredThickness] = useState<number | null>(null)
 
-  //const audioRef = useRef(new Audio(color.music) as HTMLAudioElement)
-
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     const audio = new Audio(color.music)
     audio.load()
-
     audioRef.current = audio
   }, [color.music])
 
   const clearSoundRef = useRef(new Audio(`${clearSound}`) as HTMLAudioElement)
-
   const ctxRef = useRef(null as CanvasRenderingContext2D | null)
 
   useEffect(() => {
@@ -32,7 +28,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     }
   }, [color])
 
-  const { setCanvasRef, onCanvasMouseDown } = useOnDraw(
+  const { setCanvasRef, onCanvasInteraction } = useOnDraw(
     onDraw,
     audioRef,
     ctxRef
@@ -53,7 +49,6 @@ const Canvas = ({ width, height }: CanvasProps) => {
     if (ctxRef.current) {
       ctxRef.current.clearRect(0, 0, width, height)
       clearSoundRef.current.play()
-
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.currentTime = 0
@@ -67,7 +62,8 @@ const Canvas = ({ width, height }: CanvasProps) => {
         <canvas
           width={width}
           height={height}
-          onMouseDown={onCanvasMouseDown}
+          onMouseDown={onCanvasInteraction}
+          onTouchStart={onCanvasInteraction}
           className="canvas-style"
           ref={setCanvasRef}
         />
