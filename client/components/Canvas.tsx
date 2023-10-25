@@ -17,6 +17,11 @@ const Canvas = ({ width, height }: CanvasProps) => {
     const audio = new Audio(color.music)
     audio.load()
     audioRef.current = audio
+
+    audio.addEventListener('ended', function () {
+      this.currentTime = 0
+      this.play()
+    })
   }, [color.music])
 
   const clearSoundRef = useRef(new Audio(`${clearSound}`) as HTMLAudioElement)
